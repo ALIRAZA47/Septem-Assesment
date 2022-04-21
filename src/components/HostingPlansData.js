@@ -12,7 +12,10 @@ import { query, collection, getDocs, where } from "firebase/firestore";
 import { useAuth } from "../AuthContext";
 
 export default function ToolbarGrid() {
-  const { navigateTo } = useAuth();
+  const { navigateTo, getUser, isUser } = useAuth();
+  if (!isUser()) {
+    navigateTo("/welcome");
+  }
   // custom toolbar
   function CustomToolbar() {
     return (
@@ -80,7 +83,6 @@ export default function ToolbarGrid() {
     },
   ];
 
-  const { getUser } = useAuth();
   const [rows, setRows] = React.useState([]);
   const [loadingData, setLoadingData] = React.useState(true);
 
@@ -111,6 +113,9 @@ export default function ToolbarGrid() {
               planStartDate: querySnapshot.docs[i].data()["Plan Start Date"],
             });
           }
+          if (hosting_plans.length === 0) {
+            navigateTo("/plans");
+          }
           setRows(hosting_plans);
           setLoadingData(false);
         }
@@ -119,10 +124,6 @@ export default function ToolbarGrid() {
         console.log("Error getting documents: ", error);
       });
   }, []);
-  //
-  // if (rows.length === 0) {
-  //   navigateTo("/plans");
-  // }
 
   data.columns = columns;
   data.rows = rows;

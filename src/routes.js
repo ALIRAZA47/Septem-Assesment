@@ -34,41 +34,17 @@ export function Routes() {
 
       {/* Signup route */}
       <Route exact path="/signup">
-        {isUser() ? (
-          userHasPlans ? (
-            <Redirect to="/dashboard" />
-          ) : (
-            <Redirect to="/plans" />
-          )
-        ) : (
-          <Signup />
-        )}
+        {isUser() ? <Redirect to="/dashboard" /> : <Signup />}
       </Route>
 
       {/* Plans route */}
       <Route exact path="/plans">
-        {isUser() ? (
-          userHasPlans ? (
-            <Redirect to="/dashboard" />
-          ) : (
-            <Plans />
-          )
-        ) : (
-          <Redirect to="/signup" />
-        )}
+        <Plans />
       </Route>
 
       {/* Dashboard Rout */}
       <Route exact path="/dashboard">
-        {isUser() ? (
-          userHasPlans ? (
-            <Dashboard />
-          ) : (
-            <Redirect to="/plans" />
-          )
-        ) : (
-          <Redirect to="/" />
-        )}
+        <Dashboard />
       </Route>
     </Switch>
   );

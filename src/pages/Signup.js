@@ -4,6 +4,10 @@ import { useAuth } from "../AuthContext";
 import { useHistory } from "react-router-dom";
 
 export default function Signup(props) {
+  const { isUser, navigateTo } = useAuth();
+  if (isUser()) {
+    navigateTo("/dashboard");
+  }
   const [formValues, setFormValues] = useReducer(
     (prevState, newState) => ({ ...prevState, ...newState }),
     {

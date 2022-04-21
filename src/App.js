@@ -16,9 +16,9 @@ function App() {
           className=" d-flex justify-content-center text-center "
           style={{
             backgroundColor: "#abcfe4",
-            marginTop: "15%",
-            marginBottom: "5%",
-            height: "80%s",
+            marginTop: "120px",
+            height: "100%",
+            // padding: "20px",
           }}
         >
           <Routes />

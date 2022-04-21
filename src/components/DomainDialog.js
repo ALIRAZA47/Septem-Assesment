@@ -7,6 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { addHostingPlanToFirestore } from "../firebase";
+import { Link } from "react-router-dom";
 
 export default function FormDialog({
   open,
@@ -42,12 +43,14 @@ export default function FormDialog({
           />
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={handleClose}>
+          <Button variant="outlined" sx={{ mr: 2 }} onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="contained" onClick={submitDialog}>
-            Buy Hosting Plan
-          </Button>
+          <Link to="/dashboard">
+            <Button variant="contained" onClick={submitDialog}>
+              Buy Hosting Plan
+            </Button>
+          </Link>
         </DialogActions>
       </Dialog>
     </div>

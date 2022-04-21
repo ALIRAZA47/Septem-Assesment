@@ -60,7 +60,7 @@ export function AuthProvider({ children }) {
     auth.signOut();
     Cookies.remove("currentUser");
     setCurrentUser(null);
-    window.location.reload();
+    navigateTo("/");
   }
 
   function getUser() {

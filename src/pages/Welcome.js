@@ -6,6 +6,8 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../AuthContext";
+import { Redirect } from "react-router-dom";
 const bull = (
   <Box
     component="span"
@@ -16,10 +18,14 @@ const bull = (
 );
 
 export default function Welcome() {
-  // Logout_Button.display = "none";
+  const { isUser, navigateTo } = useAuth();
+  if (isUser()) {
+    navigateTo("/dashboard");
+  }
+
   const history = useHistory();
   return (
-    <Card sx={{ minWidth: "70%" }}>
+    <Card sx={{ maxWidth: "80%", maxHeight: 300, padding: 4 }}>
       <CardContent>
         <Typography
           sx={{ mb: 1.5, letterSpacing: 3 }}
