@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import { BrowserRouter as Link } from "react-router-dom";
+
+import { AuthProvider } from "./AuthContext";
+
+import { Routes } from "./constants/routes";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <AuthProvider>
+      <div className="App">
+        <nav
+          style={{
+            margin: 10,
+            borderRadius: 4,
+            backgroundColor: "#1C8EF9",
+            // marginBottom: 20,
+          }}
+          className="navbar navbar-expand-lg navbar-light fixed-top"
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <div className="container justify-content-center text-white font-arial">
+            <Link className="navbar-brand text-white" to={"/"}>
+              <b>ARK Web Hosting</b>
+            </Link>
+          </div>
+        </nav>
+
+        <div
+          className=" d-flex justify-content-center text-center "
+          style={{
+            backgroundColor: "#abcfe4",
+            marginTop: "15%",
+            marginBottom: "5%",
+            height: "80%s",
+          }}
+        >
+          <Routes />
+        </div>
+      </div>
+    </AuthProvider>
   );
 }
 
