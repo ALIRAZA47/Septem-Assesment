@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
     const user = [];
     user.push(await getUserFromFirestore(formValues.username));
     console.log("user", user);
-    if (user.length > 0) {
+    if (user[0] !== null) {
       // console.log("user exists", user[0]);
       // user already exists -> redirect to plans page
       setCurrentUser(user);
@@ -28,30 +28,29 @@ export function AuthProvider({ children }) {
 
       Cookies.set("currentUser", strUser, { expires: 1 });
 
-      navigateTo("/plans");
+      window.location.reload();
       return;
     } else {
-      await createUserWithEmailAndPassword(
+      console.log("user does not exist");
+      const signupRes = await createUserWithEmailAndPassword(
         auth,
         formValues.username + "@ark.com",
         formValues.password
-      )
-        .then((cred) => {
-          // Sign in success
-          //add user to firestore
-          addUserToFirestore(formValues, setError);
-
-          // redirect to plans page
-          history.push("/plans");
-          setCurrentUser(formValues);
-          console.log(cred);
-        })
-        .catch((error) => {
-          // Handle Errors here.
-          var errorMessage = error.message;
-          setError(errorMessage);
-          // ...
-        });
+      );
+      console.log("signupRes", signupRes);
+      if (signupRes.user) {
+        // Sign in success;
+        //add user to firestore
+        await addUserToFirestore(formValues, setError);
+        // redirect to plans page
+        setCurrentUser(formValues);
+        Cookies.set("currentUser", JSON.stringify(formValues), { expires: 1 });
+        window.location.reload();
+      } else {
+        // Handle Errors here.
+        // var errorMessage = error.message;
+        setError("Error Signing Up: ");
+      }
     }
   }
   function navigateTo(path) {
@@ -61,23 +60,33 @@ export function AuthProvider({ children }) {
     auth.signOut();
     Cookies.remove("currentUser");
     setCurrentUser(null);
-    history.push("/");
+    window.location.reload();
   }
 
   function getUser() {
     try {
-      const user = JSON.parse(Cookies.get("currentUser"));
-      return user;
+      const savedUser = Cookies.get("currentUser");
+      if (savedUser) {
+        const user = JSON.parse(savedUser);
+        return user;
+      } else {
+        return null;
+      }
     } catch (error) {
       console.log(error);
       return null;
     }
   }
   function isUser() {
-    if (getUser()) {
-      return true;
+    try {
+      if (getUser() !== null) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
     }
-    return false;
   }
 
   // set return values

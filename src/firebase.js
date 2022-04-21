@@ -36,13 +36,12 @@ export async function addUserToFirestore(user, setError) {
   console.log(user);
   const userRef = collection(db, "Users");
   // Add a new document in collection "cities"
-  addDoc(userRef, user)
-    .then(function (docRef) {
-      console.log("User added to Firestore with ID: ", docRef.id);
-    })
-    .catch(function (error) {
-      setError("Error adding User to Firestore: ");
-    });
+  const addUserRes = await addDoc(userRef, user);
+  if (addUserRes.error) {
+    setError("Error adding User to Firestore: ");
+  } else {
+    console.log("User added to Firestore with ID: ", addUserRes.id);
+  }
 }
 
 // get user from firestore
@@ -71,18 +70,55 @@ export async function addHostingPlanToFirestore(plan) {
     });
 }
 
-// get hosting plan from firestore
-export async function userHasHostingPlans() {
+// get hosting plans from firestore
+export async function getHostingPlansFromFirestore(username) {
+  // fetch data from firestore
   const q = query(
     collection(db, "hosting_plans"),
-    where("User ID", "==", JSON.parse(Cookies.get("currentUser")).username)
+    where("User ID", "==", username)
   );
+  const hosting_plans = [];
   const querySnapshot = await getDocs(q);
-  if (querySnapshot.empty) {
-    return false;
-  } else {
-    // console.log(querySnapshot.docs[0].data());
-    return true;
+  console.log(querySnapshot);
+  if (!querySnapshot.empty) {
+    //   console.log(querySnapshot.docs[0].data());
+    for (let i = 0; i < querySnapshot.docs.length; i++) {
+      hosting_plans.push({
+        id: i,
+        domain: querySnapshot.docs[i].data()["Domain Name"],
+        planName: querySnapshot.docs[i].data()["Plan Name"],
+        serverIP: querySnapshot.docs[i].data()["Server IP"],
+        userId: querySnapshot.docs[i].data()["User ID"],
+        ftUser: querySnapshot.docs[i].data()["FTP Username"],
+        ftPass: querySnapshot.docs[i].data()["FTP Password"],
+        planEndDate: querySnapshot.docs[i].data()["Plan End Date"],
+        planStartDate: querySnapshot.docs[i].data()["Plan Start Date"],
+      });
+    }
+  }
+
+  return hosting_plans;
+}
+
+// get hosting plan from firestore
+export async function userHasHostingPlans(setHasPlan) {
+  try {
+    const cUser = Cookies.get("currentUser");
+    const q = query(
+      collection(db, "hosting_plans"),
+      where("User ID", "==", JSON.parse(cUser).username)
+    );
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
+
+    if (querySnapshot.empty) {
+      return setHasPlan(false);
+    } else {
+      console.log(querySnapshot.docs[0].data());
+      return setHasPlan(true);
+    }
+  } catch (error) {
+    return;
   }
 }
 

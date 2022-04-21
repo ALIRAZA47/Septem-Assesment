@@ -16,6 +16,7 @@ const bull = (
 );
 
 export default function Welcome() {
+  // Logout_Button.display = "none";
   const history = useHistory();
   return (
     <Card sx={{ minWidth: "70%" }}>

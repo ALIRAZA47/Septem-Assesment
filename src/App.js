@@ -4,29 +4,14 @@ import "./App.css";
 import { BrowserRouter as Link } from "react-router-dom";
 
 import { AuthProvider } from "./AuthContext";
-
-import { Routes } from "./constants/routes";
+import { Routes } from "./routes";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <AuthProvider>
       <div className="App">
-        <nav
-          style={{
-            margin: 10,
-            borderRadius: 4,
-            backgroundColor: "#1C8EF9",
-            // marginBottom: 20,
-          }}
-          className="navbar navbar-expand-lg navbar-light fixed-top"
-        >
-          <div className="container justify-content-center text-white font-arial">
-            <Link className="navbar-brand text-white" to={"/"}>
-              <b>ARK Web Hosting</b>
-            </Link>
-          </div>
-        </nav>
-
+        <Navbar />
         <div
           className=" d-flex justify-content-center text-center "
           style={{

@@ -12,6 +12,7 @@ import { query, collection, getDocs, where } from "firebase/firestore";
 import { useAuth } from "../AuthContext";
 
 export default function ToolbarGrid() {
+  const { navigateTo } = useAuth();
   // custom toolbar
   function CustomToolbar() {
     return (
@@ -83,6 +84,7 @@ export default function ToolbarGrid() {
   const [rows, setRows] = React.useState([]);
   const [loadingData, setLoadingData] = React.useState(true);
 
+  const hosting_plans = [];
   React.useEffect(() => {
     // fetch data from firestore
     const q = query(
@@ -95,7 +97,6 @@ export default function ToolbarGrid() {
         if (querySnapshot.empty) {
           setRows([]);
         } else {
-          const hosting_plans = [];
           //   console.log(querySnapshot.docs[0].data());
           for (let i = 0; i < querySnapshot.docs.length; i++) {
             hosting_plans.push({
@@ -117,9 +118,11 @@ export default function ToolbarGrid() {
       .catch((error) => {
         console.log("Error getting documents: ", error);
       });
-  });
+  }, []);
   //
-  //   getHostingPlanFromFirestore("ali.raza", rows, setRows);
+  // if (rows.length === 0) {
+  //   navigateTo("/plans");
+  // }
 
   data.columns = columns;
   data.rows = rows;

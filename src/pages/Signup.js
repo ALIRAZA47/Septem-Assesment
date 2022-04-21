@@ -4,17 +4,6 @@ import { useAuth } from "../AuthContext";
 import { useHistory } from "react-router-dom";
 
 export default function Signup(props) {
-  const { currentUser } = useAuth();
-  const history = useHistory;
-
-  // redirect if user is already logged in
-  if (currentUser) {
-    history("/plans");
-  } else {
-    // Cookies.set("currentUser", JSON.stringify(user), { expires: 1 });
-    // console.log(Cookies.get("currentUser"));
-    // console.log(JSON.parse(Cookies.get("currentUser")));
-  }
   const [formValues, setFormValues] = useReducer(
     (prevState, newState) => ({ ...prevState, ...newState }),
     {

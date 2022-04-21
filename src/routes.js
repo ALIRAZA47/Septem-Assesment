@@ -3,25 +3,39 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 // COMPONENTs
-import Plans from "../pages/Plans";
-import { useAuth } from "../AuthContext";
-import Signup from "../pages/Signup";
-import Welcome from "../pages/Welcome";
-import Dashboard from "../pages/Dashboard";
-import { userHasHostingPlans } from "../firebase";
+import Plans from "./pages/Plans";
+import { useAuth } from "./AuthContext";
+import Signup from "./pages/Signup";
+import Welcome from "./pages/Welcome";
+import Dashboard from "./pages/Dashboard";
+import { userHasHostingPlans } from "./firebase";
 
 export function Routes() {
+  const [userHasPlans, setUserHasPlans] = React.useState(false);
   const { isUser } = useAuth();
+  userHasHostingPlans(setUserHasPlans);
   console.log(isUser());
+  console.log(userHasPlans);
   return (
     <Switch>
       {/* Welcome/Splash route */}
-      <Route exact path="/" component={Welcome} />
+      <Route exact path="/welcome" component={Welcome} />
+      <Route exact path="/">
+        {isUser() ? (
+          userHasPlans ? (
+            <Redirect to="/dashboard" />
+          ) : (
+            <Redirect to="/plans" />
+          )
+        ) : (
+          <Welcome />
+        )}
+      </Route>
 
       {/* Signup route */}
       <Route exact path="/signup">
         {isUser() ? (
-          userHasHostingPlans() ? (
+          userHasPlans ? (
             <Redirect to="/dashboard" />
           ) : (
             <Redirect to="/plans" />
@@ -34,7 +48,7 @@ export function Routes() {
       {/* Plans route */}
       <Route exact path="/plans">
         {isUser() ? (
-          userHasHostingPlans() ? (
+          userHasPlans ? (
             <Redirect to="/dashboard" />
           ) : (
             <Plans />
@@ -47,13 +61,13 @@ export function Routes() {
       {/* Dashboard Rout */}
       <Route exact path="/dashboard">
         {isUser() ? (
-          userHasHostingPlans() ? (
+          userHasPlans ? (
             <Dashboard />
           ) : (
             <Redirect to="/plans" />
           )
         ) : (
-          <Redirect to="/signup" />
+          <Redirect to="/" />
         )}
       </Route>
     </Switch>
