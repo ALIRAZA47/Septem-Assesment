@@ -26,12 +26,7 @@ export function AuthProvider({ children }) {
     if (user[0] !== null) {
       // console.log("user exists", user[0]);
       // user already exists -> redirect to plans page
-      setCurrentUser(user);
-      const strUser = JSON.stringify(user[0]);
-
-      Cookies.set("currentUser", strUser, { expires: 1 });
-
-      navigateTo("/dashboard");
+      setError("User already exists. Please login to you account.");
       return;
     } else {
       console.log("user does not exist");

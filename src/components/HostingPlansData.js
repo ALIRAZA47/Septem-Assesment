@@ -97,7 +97,9 @@ export default function ToolbarGrid() {
     getDocs(q)
       .then((querySnapshot) => {
         if (querySnapshot.empty) {
+          navigateTo("/plans");
           setRows([]);
+          setLoadingData(false);
         } else {
           //   console.log(querySnapshot.docs[0].data());
           for (let i = 0; i < querySnapshot.docs.length; i++) {
@@ -113,9 +115,7 @@ export default function ToolbarGrid() {
               planStartDate: querySnapshot.docs[i].data()["Plan Start Date"],
             });
           }
-          if (hosting_plans.length === 0) {
-            navigateTo("/plans");
-          }
+
           setRows(hosting_plans);
           setLoadingData(false);
         }
