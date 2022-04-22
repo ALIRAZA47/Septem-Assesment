@@ -34,7 +34,7 @@ export function Routes() {
 
       {/* Signup route */}
       <Route exact path="/signup">
-        {isUser() ? <Redirect to="/dashboard" /> : <Signup />}
+        <Signup />
       </Route>
 
       {/* Plans route */}

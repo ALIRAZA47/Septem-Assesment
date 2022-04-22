@@ -28,7 +28,7 @@ export function AuthProvider({ children }) {
 
       Cookies.set("currentUser", strUser, { expires: 1 });
 
-      window.location.reload();
+      navigateTo("/dashboard");
       return;
     } else {
       console.log("user does not exist");
@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
         // redirect to plans page
         setCurrentUser(formValues);
         Cookies.set("currentUser", JSON.stringify(formValues), { expires: 1 });
-        window.location.reload();
+        navigateTo("/dashboard");
       } else {
         // Handle Errors here.
         // var errorMessage = error.message;
