@@ -154,6 +154,9 @@ export default function Signup(props) {
         >
           Sign Up
         </button>
+        <p className="mt-4">
+          Already have an account? <a href="/login">Login</a>
+        </p>
       </form>
     </Card>
   );

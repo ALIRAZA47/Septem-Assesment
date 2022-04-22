@@ -1,6 +1,9 @@
 import React, { useState, useContext } from "react";
 import { auth, getUserFromFirestore, addUserToFirestore } from "./firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -53,6 +56,29 @@ export function AuthProvider({ children }) {
       }
     }
   }
+
+  // create login func
+  async function login(formValues, setError) {
+    const user = [];
+    const loginRes = await signInWithEmailAndPassword(
+      auth,
+      formValues.username + "@ark.com",
+      formValues.password
+    );
+    if (loginRes.user) {
+      // Sign in success;
+      //add user to firestore
+      user.push(await getUserFromFirestore(formValues.username));
+      setCurrentUser(user[0]);
+      Cookies.set("currentUser", JSON.stringify(user[0]), { expires: 1 });
+      navigateTo("/dashboard");
+    } else {
+      // Handle Errors here.
+      // var errorMessage = error.message;
+      setError("Error Logging In: ");
+    }
+  }
+
   function navigateTo(path) {
     history.push(path);
   }
@@ -97,6 +123,7 @@ export function AuthProvider({ children }) {
     signout,
     getUser,
     isUser,
+    login,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

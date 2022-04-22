@@ -8,6 +8,7 @@ import { useAuth } from "./AuthContext";
 import Signup from "./pages/Signup";
 import Welcome from "./pages/Welcome";
 import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
 import { userHasHostingPlans } from "./firebase";
 
 export function Routes() {
@@ -21,20 +22,15 @@ export function Routes() {
       {/* Welcome/Splash route */}
       <Route exact path="/welcome" component={Welcome} />
       <Route exact path="/">
-        {isUser() ? (
-          userHasPlans ? (
-            <Redirect to="/dashboard" />
-          ) : (
-            <Redirect to="/plans" />
-          )
-        ) : (
-          <Welcome />
-        )}
+        {isUser() ? <Redirect to="/dashboard" /> : <Welcome />}
       </Route>
 
       {/* Signup route */}
       <Route exact path="/signup">
         <Signup />
+      </Route>
+      <Route exact path="/login">
+        <Login />
       </Route>
 
       {/* Plans route */}

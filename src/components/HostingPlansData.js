@@ -144,7 +144,7 @@ export default function ToolbarGrid() {
         hideFooterPagination
         hideFooter
         loading={loadingData}
-        rowsPerPageOptions={[rows.length]}
+        rowsPerPageOptions={[data.rows.length]}
         density="comfortable"
       />
     </div>
